@@ -1,0 +1,12 @@
+[Unit]
+Description=Auto update dynamic IP to Cloudflare DNS
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+ExecStart=/usr/bin/python3 /home/nduc/ddns/main.py
+
+[Install]
+WantedBy=default.target

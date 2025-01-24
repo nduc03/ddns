@@ -1,6 +1,5 @@
 import time
 import sys
-import random
 import traceback
 import os
 
@@ -8,6 +7,7 @@ import requests
 import dotenv
 
 dotenv.load_dotenv()
+
 
 def get_dns_info(zone_id: str, name: str) -> str:
     url = f"https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records"
@@ -22,12 +22,13 @@ def get_dns_info(zone_id: str, name: str) -> str:
         for dns_record in dns_records:
             if dns_record['name'] == name:
                 return dns_record
-    except Exception as e:
+    except:
         print(traceback.format_exc())
     return None
 
+
 def update_dns_record(zone_id, dns_record_name, ip):
-     dns_record_info = get_dns_info(zone_id, dns_record_name)
+    dns_record_info = get_dns_info(zone_id, dns_record_name)
     if dns_record_info is None:
         print(f"DNS record {dns_record_name} not found")
         return None
@@ -55,6 +56,7 @@ def update_dns_record(zone_id, dns_record_name, ip):
         print(traceback.format_exc())
         return None
 
+
 def get_ip():
     while True:
         try:
@@ -62,6 +64,7 @@ def get_ip():
         except:
             print(traceback.format_exc())
             time.sleep(30)
+
 
 def on_new_ip(interval_minute, callback):
     previous_ip = None

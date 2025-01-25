@@ -1,4 +1,4 @@
-## Setup Cloudflare DDNS
+## How to setup Cloudflare DDNS
 1. Open ssh
     ```sh
     ssh nduc@server.home
@@ -19,8 +19,8 @@
 
 4. After .env file is copied, run these commands to start the service:
     ```sh
-    sudo pip install -r requirements.txt
-    sudo cp ddns.service etc/systemd/system/ddns.service
+    sudo apt install python3-requests
+    sudo cp ddns.service /etc/systemd/system/ddns.service
     sudo systemctl daemon-reload
     sudo systemctl enable ddns.service
     sudo systemctl start ddns.service

@@ -86,7 +86,8 @@ def on_new_ip(interval_minute, callback):
 
 
 def on_new_ip_callback(ip):
-    print(update_dns_record(os.getenv('ZONE_ID'), os.getenv('DNS_RECORD_NAME'), ip))
+    print(update_dns_record(os.getenv('ZONE_ID'), os.getenv('DNS_NAME1'), ip))
+    print(update_dns_record(os.getenv('ZONE_ID'), os.getenv('DNS_NAME2'), ip))
 
 
 if __name__ == '__main__':

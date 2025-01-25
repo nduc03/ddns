@@ -25,3 +25,18 @@
     sudo systemctl enable ddns.service
     sudo systemctl start ddns.service
     ```
+
+## How to update service
+1. Pull new code:
+    ```sh
+    cd ~/ddns
+    git pull
+    ```
+2. If .env is updated, run this on host (at project directory) and outside the ssh session:
+    ```sh
+    scp .env nduc@server.home:~/ddns/.env
+    ```
+3. Restart service:
+    ```sh
+    sudo systemctl restart ddns.service
+    ```

@@ -7,6 +7,9 @@ Type=simple
 Restart=on-failure
 RestartSec=3
 ExecStart=/usr/bin/python3 /home/nduc/ddns/main.py
+EnvironmentFile=/home/nduc/ddns/.env
+StandardOutput=append:/home/nduc/ddns/service-output.txt
+StandardError=append:/home/nduc/ddns/service-error.txt
 
 [Install]
 WantedBy=default.target

@@ -4,9 +4,12 @@ import traceback
 import os
 
 import requests
-import dotenv
 
-dotenv.load_dotenv()
+try:
+    import dotenv
+    dotenv.load_dotenv()
+except ImportError:
+    pass
 
 
 def get_dns_info(zone_id: str, name: str) -> str:
@@ -86,4 +89,5 @@ def on_new_ip_callback(ip):
     print(update_dns_record(os.getenv('ZONE_ID'), os.getenv('DNS_RECORD_NAME'), ip))
 
 
-on_new_ip(5, on_new_ip_callback)
+if __name__ == '__main__':
+    on_new_ip(30, on_new_ip_callback)

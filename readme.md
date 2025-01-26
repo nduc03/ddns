@@ -27,12 +27,12 @@
     ```
 
 ## How to update service
-1. Pull new code:
+1. Open ssh and pull new code:
     ```sh
     cd ~/ddns
     git pull
     ```
-2. If .env is updated, run this on host (at project directory) and outside the ssh session:
+2. If .env is modified, run this on  dev machine (at project directory) and outside the ssh session:
     ```sh
     scp .env nduc@server.home:~/ddns/.env
     ```

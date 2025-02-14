@@ -1,7 +1,7 @@
 ## How to setup Cloudflare DDNS
 1. Open ssh
     ```sh
-    ssh nduc@server.home
+    ssh nduc@server.lan
     ```
 
 2. Setting up needed files
@@ -12,18 +12,18 @@
     git clone https://github.com/nduc03/ddns.git .
     ```
 
-3. Run this on dev machine (at project directory) and outside the ssh session above after clone:
+3. Run this on remote machine (at project directory) and outside the ssh session above after clone:
     ```sh
-    scp .env nduc@server.home:~/ddns/.env
+    scp .env nduc@server.lan:~/ddns/.env
     ```
 
 4. After .env file is copied, run these commands to start the service:
     ```sh
     sudo apt install python3-requests
-    sudo cp ddns.service /etc/systemd/system/ddns.service
+    sudo cp ddns.service /etc/systemd/system/cloudflare-ddns.service
     sudo systemctl daemon-reload
-    sudo systemctl enable ddns.service
-    sudo systemctl start ddns.service
+    sudo systemctl enable cloudflare-ddns
+    sudo systemctl start cloudflare-ddns
     ```
 
 ## How to update service
@@ -32,11 +32,11 @@
     cd ~/ddns
     git pull
     ```
-2. If .env is modified, run this on  dev machine (at project directory) and outside the ssh session:
+2. If .env is modified, run this on  remote machine (at project directory) and outside the ssh session:
     ```sh
-    scp .env nduc@server.home:~/ddns/.env
+    scp .env nduc@server.lan:~/ddns/.env
     ```
 3. Restart service:
     ```sh
-    sudo systemctl restart ddns.service
+    sudo systemctl restart cloudflare-ddns
     ```

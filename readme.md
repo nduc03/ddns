@@ -12,7 +12,7 @@
     git clone https://github.com/nduc03/ddns.git .
     ```
 
-3. Run this on remote machine (at project directory) and outside the ssh session above after clone:
+3. Run this on local machine (at project directory) outside the ssh session above after clone:
     ```sh
     scp .env nduc@server.lan:~/ddns/.env
     ```
@@ -32,7 +32,7 @@
     cd ~/ddns
     git pull
     ```
-2. If .env is modified, run this on  remote machine (at project directory) and outside the ssh session:
+2. If .env is modified, run this on local machine (at project directory) outside the ssh session:
     ```sh
     scp .env nduc@server.lan:~/ddns/.env
     ```

@@ -1,7 +1,7 @@
 ## How to setup Cloudflare DDNS
 1. Open ssh
     ```sh
-    ssh nduc@server.lan
+    ssh nduc@hs.lan
     ```
 
 2. Setting up needed files
@@ -14,7 +14,7 @@
 
 3. Run this on local machine (at project directory) outside the ssh session above after clone:
     ```sh
-    scp .env nduc@server.lan:~/ddns/.env
+    scp .env nduc@hs.lan:~/ddns/.env
     ```
 
 4. After .env file is copied, run these commands to start the service:

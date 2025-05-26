@@ -2,7 +2,6 @@ import time
 import sys
 import traceback
 import os
-import threading
 
 import requests
 
@@ -14,7 +13,7 @@ except ImportError:
     pass
 
 
-def get_list_dns_info_of(zone_id: str, name: str) -> list:
+def get_list_dns_info(zone_id: str, name: str, type_filter: list) -> list:
     url = f"https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records"
     headers = {
         'X-Auth-Key': f"{os.getenv('CLOUDFLARE_API_KEY')}",
@@ -28,7 +27,7 @@ def get_list_dns_info_of(zone_id: str, name: str) -> list:
 
         dns_records_found = []
         for dns_record in dns_records:
-            if dns_record['name'] == name:
+            if dns_record['name'] == name and dns_record['type'] in type_filter:
                 dns_records_found.append(dns_record)
 
         return dns_records_found
@@ -38,13 +37,16 @@ def get_list_dns_info_of(zone_id: str, name: str) -> list:
 
 
 def update_dns_record(zone_id, dns_record_name, ip, ipv6 = None):
-    list_dns_info = get_list_dns_info_of(zone_id, dns_record_name)
+    list_dns_info = get_list_dns_info(zone_id, dns_record_name, ['A', 'AAAA'])
+    if list_dns_info is None:
+        print(f"Failed to retrieve DNS records for {dns_record_name}")
+        return None
     if len(list_dns_info) == 0:
         print(f"DNS record {dns_record_name} not found")
         return None
 
     if ipv6 is not None and len(list_dns_info) < 2:
-        print(f"DNS record {dns_record_name} does not have enough records for dual-stack.")
+        print(f"DNS {dns_record_name} does not have enough records for dual-stack.")
         print("Falling back to IPv4 only.")
         ipv6 = None
 
@@ -116,7 +118,7 @@ def on_new_ip(interval_minute, callback):
         try:
             ip = get_ip()
             ipv6 = get_ipv6()
-            if ip is not None and (ip != previous_ip or ipv6 != previous_ipv6):
+            if (ip is not None and ip != previous_ip) or (ipv6 is not None and ipv6 != previous_ipv6):
                 print(f"New IP detected: IPv4: {ip}, IPv6: {ipv6}")
                 previous_ip = ip
                 previous_ipv6 = ipv6
@@ -128,21 +130,6 @@ def on_new_ip(interval_minute, callback):
 
         time.sleep(interval_minute * 60)
 
-
-def on_new_ipv6(interval_minute, callback):
-    previous_ip = None
-    while True:
-        try:
-            ip = get_ipv6()
-            if ip is not None and ip != previous_ip:
-                previous_ip = ip
-                callback(ip)
-        except KeyboardInterrupt:
-            sys.exit(0)
-        except:
-            print(traceback.format_exc())
-
-        time.sleep(interval_minute * 60)
 
 def on_new_ip_callback(ip, ipv6=None):
     print(update_dns_record(os.getenv('ZONE_ID'), os.getenv('DNS_NAME'), ip, ipv6))

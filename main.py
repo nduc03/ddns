@@ -107,6 +107,9 @@ def get_ipv6():
     while True:
         try:
             return requests.get('https://api6.ipify.org', timeout=30).text
+        except requests.exceptions.ConnectionError:
+            print("IPv6 not available.")
+            return None
         except:
             print(traceback.format_exc())
             time.sleep(30)
